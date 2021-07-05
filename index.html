@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decimal To Roman</title>
+</head>
+
+<body>
+    <h1>Decimal To Roman Convertor</h1>
+    <input type="number" name="" id="DecimalInput" oninput="Calculate()" placeholder="Enter a decimal number" autofocus>
+    <div id="Display"></div>
+</body>
+<script>
+    let map = {
+        1: "I",
+        5: "V",
+        10: "X",
+        50: "L",
+        100: "C",
+        500: "D",
+        1000: "M"
+    }
+
+    let input = document.getElementById("DecimalInput").value;
+
+    function Calculate() {
+        input = document.getElementById("DecimalInput").value;
+        if (input > 4500) {
+            alert("Maximum value reached");
+            document.getElementById("DecimalInput").value = "";
+            return document.getElementById("Display").innerHTML = "";
+        }
+        
+        if(input == "") document.getElementById("Display").innerHTML = "";
+
+        let Roman = "";
+        let multiplier = 10 ** (input.length - 1);
+
+        for (let i = 0; i < input.length; i++) {
+            Roman += Convert(input[i] * multiplier);
+            multiplier /= 10;
+        }
+        document.getElementById("Display").innerHTML = Roman;
+    }
+
+    function Convert(number) {
+
+        if(map[number]) return map[number];
+        if(number == 0) return ""; 
+
+        let noOfDigits = `${number}`.length;
+        let firstDigit = `${number}`[0];
+
+        if (firstDigit == 4) return `${map[10 ** (noOfDigits - 1)]}${map[(10 ** (noOfDigits - 1)) * 5]}`;
+        else if (firstDigit == 9) return `${map[10 ** (noOfDigits - 1)]}${map[10 ** noOfDigits]}`;
+        else return `${Convert(number - (10 ** (noOfDigits - 1)))}${Convert(10 ** (noOfDigits - 1))}`;
+    }
+</script>
+</html>
